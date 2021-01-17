@@ -8,11 +8,14 @@ fetch("/api/transaction")
   })
   .then(data => {
     transactions=data;
+    
     populateTotal();
     populateTable();
     populateChart();
   });
 
+let reduce = transactions.reduce 
+  
 function populateTotal() {
 
   let total = transactions.reduce((total, t) => {
