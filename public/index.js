@@ -1,3 +1,4 @@
+
 let transactions = [];
 let myChart;
 
@@ -6,9 +7,7 @@ fetch("/api/transaction")
     return response.json();
   })
   .then(data => {
-
-    transactions = data;
-
+    transactions=data;
     populateTotal();
     populateTable();
     populateChart();
