@@ -6,6 +6,7 @@ fetch("/api/transaction")
     return response.json();
   })
   .then(data => {
+
     transactions = data;
 
     populateTotal();
@@ -14,6 +15,7 @@ fetch("/api/transaction")
   });
 
 function populateTotal() {
+
   let total = transactions.reduce((total, t) => {
     return total + parseInt(t.value);
   }, 0);
@@ -27,6 +29,7 @@ function populateTable() {
   tbody.innerHTML = "";
 
   transactions.forEach(transaction => {
+
     let tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${transaction.name}</td>
@@ -38,13 +41,16 @@ function populateTable() {
 }
 
 function populateChart() {
+
   let reversed = transactions.slice().reverse();
   let sum = 0;
+
 
   let labels = reversed.map(t => {
     let date = new Date(t.date);
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   });
+
 
   let data = reversed.map(t => {
     sum += parseInt(t.value);
@@ -64,7 +70,7 @@ function populateChart() {
         datasets: [{
             label: "Total Over Time",
             fill: true,
-            backgroundColor: "#FFC0CB",
+            backgroundColor: "#6666ff",
             data
         }]
     }
@@ -84,22 +90,27 @@ function sendTransaction(isAdding) {
     errorEl.textContent = "";
   }
 
+
   let transaction = {
     name: nameEl.value,
     value: amountEl.value,
     date: new Date().toISOString()
   };
 
+
   if (!isAdding) {
     transaction.value *= -1;
   }
 
+
   transactions.unshift(transaction);
+
 
   populateChart();
   populateTable();
   populateTotal();
- 
+  
+
   fetch("/api/transaction", {
     method: "POST",
     body: JSON.stringify(transaction),
@@ -116,11 +127,13 @@ function sendTransaction(isAdding) {
       errorEl.textContent = "Missing Information";
     }
     else {
+
       nameEl.value = "";
       amountEl.value = "";
     }
   })
   .catch(err => {
+
     saveRecord(transaction);
 
     nameEl.value = "";
